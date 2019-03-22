@@ -63,7 +63,7 @@ std::string XCommonEventHeaderImp::toString()
         auto js = toJson();
         return js.dump();
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to dump XCommonEventHeaderImp to json string:{}.", e.what());
         return "";
@@ -184,7 +184,7 @@ nlohmann::json XCommonEventHeaderImp::toJson()
 
         return field;
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to build XCommonEventHeaderImp to json object:{}.", e.what());
         return json();

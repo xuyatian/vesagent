@@ -30,7 +30,7 @@ std::string XStateChangeFieldsImp::toString()
         auto js = toJson();
         return js.dump();
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to dump XStateChangeFields to json string:{}.", e.what());
         return "";
@@ -85,7 +85,7 @@ json XStateChangeFieldsImp::toJson()
 
         return jsEvent;
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to build XStateChangeFields to json object:{}.", e.what());
         return json();

@@ -34,7 +34,7 @@ std::string XHeartbeatFieldsImp::toString()
         auto js = toJson();
         return js.dump();
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to dump XHeartbeatFields to json string:{}.", e.what());
         return "";
@@ -63,7 +63,7 @@ json XHeartbeatFieldsImp::toJson()
 
         return jsEvent;
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to build XHeartbeatFields to json object:{}.", e.what());
         return json();

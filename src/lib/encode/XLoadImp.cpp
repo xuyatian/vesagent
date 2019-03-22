@@ -32,7 +32,7 @@ json XLoadImp::toJson()
 
         return field;
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to build XLoad to json object:{}.", e.what());
         return json();

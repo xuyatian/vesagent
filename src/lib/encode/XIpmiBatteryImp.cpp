@@ -35,7 +35,7 @@ json XIpmiBatteryImp::toJson()
 
         return field;
     }
-    catch (json::type_error& e)
+    catch (json::exception& e)
     {
         SPDLOG_ERROR("Fail to build XIpmiBattery to json object:{}.", e.what());
         return json();
