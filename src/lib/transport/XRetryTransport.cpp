@@ -43,6 +43,7 @@ XErrorCode XRetryTransport::stop()
 
     while (isRetryRunning_.load(std::memory_order_acquire))
     {
+        SPDLOG_DEBUG("Waiting for retry exit.");
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
@@ -53,13 +54,13 @@ XErrorCode XRetryTransport::post(const std::string& event)
 {
     if (shouldCancelPost())
     {
-        return XErrorOk;
+        return XErrorCanceled;
     }
 
     if (event.empty())
     {
         SPDLOG_WARN("Trying post empty event.");
-        return XErrorOk;
+        return XErrorClientError;
     }
 
     if (!transport_)
@@ -68,7 +69,7 @@ XErrorCode XRetryTransport::post(const std::string& event)
         return XErrorNok;
     }
 
-    XErrorCode rc = XErrorOk;
+    XErrorCode rc = XErrorNok;
 
     isRetryRunning_.store(true, std::memory_order_release);
 
@@ -79,7 +80,7 @@ XErrorCode XRetryTransport::post(const std::string& event)
         SPDLOG_DEBUG("Posting event:{}.", event);
         rc = transport_->post(event);
         SPDLOG_DEBUG("Post event:{} ({}).", event, rc);
-        if (rc == XErrorOk)
+        if (rc == XErrorOk || rc == XErrorCanceled)
         {
             isRetryRunning_.store(false, std::memory_order_release);
             return rc;

@@ -62,6 +62,17 @@ XErrorCode vagt::transport::XBufferedTransport::stop()
 
 XErrorCode vagt::transport::XBufferedTransport::post(const std::string& event)
 {
+    if (shouldCancelPost())
+    {
+        return XErrorCanceled;
+    }
+
+    if (event.empty())
+    {
+        SPDLOG_WARN("Trying post empty event.");
+        return XErrorClientError;
+    }
+
     if (!queue_)
     {
         return XErrorNok;

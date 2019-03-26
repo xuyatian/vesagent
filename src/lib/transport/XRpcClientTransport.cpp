@@ -44,6 +44,17 @@ XErrorCode vagt::transport::XRpcClientTransport::stop()
 
 XErrorCode vagt::transport::XRpcClientTransport::post(const std::string & event)
 {
+    if (shouldCancelPost())
+    {
+        return XErrorCanceled;
+    }
+
+    if (event.empty())
+    {
+        SPDLOG_WARN("Trying post empty event.");
+        return XErrorClientError;
+    }
+
     if (!rpcClient_)
     {
         SPDLOG_ERROR("RPC client is not started.");
@@ -52,11 +63,7 @@ XErrorCode vagt::transport::XRpcClientTransport::post(const std::string & event)
 
     try
     {
-        if (0 == rpcClient_->post(event))
-        {
-            return XErrorOk;
-        }
-        return XErrorServerError;
+        return (XErrorCode)(rpcClient_->post(event));
     }
     catch (TTransportException ex)
     {

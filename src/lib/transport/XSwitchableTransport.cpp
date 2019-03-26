@@ -130,13 +130,13 @@ XErrorCode XSwitchableTransport::post(const std::string& event)
 {
     if (shouldCancelPost())
     {
-        return XErrorOk;
+        return XErrorCanceled;
     }
 
     if (event.empty())
     {
         SPDLOG_WARN("Trying post empty event.");
-        return XErrorOk;
+        return XErrorClientError;
     }
 
     if (transportIndex_ >= transports_.size())
@@ -145,14 +145,15 @@ XErrorCode XSwitchableTransport::post(const std::string& event)
         return XErrorNok;
     }
 
-    auto rc = XErrorOk;
+    auto rc = XErrorNok;
     for (auto i = 0;
         !shouldCancelPost() && i < transports_.size();
         ++i)
     {
         rc = tryTransport(event);
         if (rc == XErrorOk ||
-            rc == XErrorClientError)
+            rc == XErrorClientError ||
+            rc == XErrorCanceled)
         {
             return rc;
         }

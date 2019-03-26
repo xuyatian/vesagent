@@ -17,6 +17,7 @@ namespace vagt
             XErrorNok,
             XErrorTimeout,
             XErrorUnauthorized,
+            XErrorCanceled,
             XErrorClientError,
             XErrorServerError,
             XErrorNetworkError,

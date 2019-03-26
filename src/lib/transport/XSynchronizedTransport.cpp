@@ -55,7 +55,7 @@ XErrorCode XSynchronizedTransport::stop()
         transport_->cancelPost();
     }
 
-    unique_lock<mutex> lk_process(postLock_);
+    unique_lock<mutex> lkPost(postLock_);
     XErrorCode rc = XErrorNok;
     if (transport_)
     {
@@ -73,13 +73,13 @@ XErrorCode XSynchronizedTransport::post(const std::string& event)
 {
     if (shouldCancelPost())
     {
-        return XErrorOk;
+        return XErrorCanceled;
     }
 
     if (event.empty())
     {
         SPDLOG_WARN("Trying post empty event.");
-        return XErrorOk;
+        return XErrorClientError;
     }
 
     unique_lock<mutex> lk(postLock_);
@@ -87,7 +87,7 @@ XErrorCode XSynchronizedTransport::post(const std::string& event)
     {
         return transport_->post(event);
     }
-    return XErrorOk;
+    return XErrorNok;
 }
 
 void XSynchronizedTransport::cancelPost()

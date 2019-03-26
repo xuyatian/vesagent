@@ -117,13 +117,13 @@ XErrorCode vagt::transport::XRpcServerTransport::post(const std::string & event)
 {
     if (shouldCancelPost())
     {
-        return XErrorOk;
+        return XErrorCanceled;
     }
 
     if (event.empty())
     {
         SPDLOG_WARN("Trying post empty event.");
-        return XErrorOk;
+        return XErrorClientError;
     }
 
     if (!transport_)
