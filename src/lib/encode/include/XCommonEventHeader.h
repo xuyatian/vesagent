@@ -10,12 +10,12 @@ namespace vagt
 
         enum XEnumCommonEventHeaderVersion
         {
-            XEnumCommonEventHeaderVersion4_0,
+            XEnumCommonEventHeaderVersion4_0_1,
         };
 
         enum XEnumCommonEventHeaderVesEventListenerVersion
         {
-            XEnumCommonEventHeaderVesEventListenerVersion7_0,
+            XEnumCommonEventHeaderVesEventListenerVersion7_0_1,
         };
 
         enum XEnumCommonEventHeaderDomain

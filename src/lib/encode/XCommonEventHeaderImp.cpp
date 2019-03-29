@@ -2,11 +2,11 @@
 #include "XCommonEventHeaderImp.h"
 
 const std::string XEnumCommonEventHeaderVersionMapping[] = {
-    "4.0"
+    "4.0.1"
 };
 
 const std::string XEnumCommonEventHeaderVesEventListenerVersionMapping[] = {
-    "7.0"
+    "7.0.1"
 };
 
 const std::string XEnumCommonEventHeaderDomainMapping[] = {
