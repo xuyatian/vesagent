@@ -45,8 +45,8 @@ XCommonEventHeaderImp::XCommonEventHeaderImp(
         reportingEntityName_(reportingEntityName),
         priority_(priority),
         sequence_(sequence),
-        version_(XEnumCommonEventHeaderVersion4_0),
-        vesEventListenerVersion_(XEnumCommonEventHeaderVesEventListenerVersion7_0)
+        version_(XEnumCommonEventHeaderVersion4_0_1),
+        vesEventListenerVersion_(XEnumCommonEventHeaderVesEventListenerVersion7_0_1)
 {
     struct timeval tv;
     gettimeofday(&tv, nullptr);
