@@ -1,5 +1,5 @@
 # Xvesagent
-A C++ implement of ATT Services Spec(7.0)
+A C++ implement of ATT Services Spec
 ===
 Xvesagent provides 2 independent modules:
 * **xencode**: encode structure event to json string.
