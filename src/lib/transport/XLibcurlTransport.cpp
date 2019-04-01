@@ -3,15 +3,33 @@
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #endif
 #include "spdlog/spdlog.h"
+#include <functional>
 
 using namespace std;
 using namespace vagt;
 using namespace vagt::transport;
 using namespace spdlog;
 
+class XAutoCleanUp
+{
+public:
+    explicit XAutoCleanUp(function<void(void)> cleanup) :_cleanup(cleanup)
+    {
+
+    }
+    ~XAutoCleanUp()
+    {
+        if (_cleanup) _cleanup();
+    }
+private:
+    XAutoCleanUp(const XAutoCleanUp&) = delete;
+    XAutoCleanUp& operator=(const XAutoCleanUp&) = delete;
+    function<void(void)> _cleanup;
+};
+
 char XLibcurlTransport::curlErrorBuf_[CURL_ERROR_SIZE] = { 0 };
 
-struct XexpremoryStuct
+struct XMemoryStuct
 {
     char * memory;
     size_t size;
@@ -165,6 +183,13 @@ XErrorCode XLibcurlTransport::initLibcurl()
         return XErrorNok;
     }
 
+    rc = curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, writeCallback);
+    if (rc != CURLE_OK)
+    {
+        SPDLOG_ERROR("Fail to init libcurl with write callback:({}) {}.", rc, curlErrorBuf_);
+        return XErrorNok;
+    }
+
     rc = curl_easy_setopt(curl_, CURLOPT_READFUNCTION, readCallback);
     if (rc != CURLE_OK)
     {
@@ -234,19 +259,37 @@ XErrorCode XLibcurlTransport::cleanupLibcurl()
 
 XErrorCode XLibcurlTransport::curlPost(const string & body)
 {
-    XexpremoryStuct tXexprem;
+    XMemoryStuct tMem;
+    XMemoryStuct rMem;
 
-    tXexprem.memory = (char*)body.c_str();
-    tXexprem.size = body.size();
+    tMem.memory = (char*)body.c_str();
+    tMem.size = body.size();
 
-    auto rc = curl_easy_setopt(curl_, CURLOPT_READDATA, &tXexprem);
+    rMem.size = 0;
+    rMem.memory = (char*)malloc(1);
+
+    XAutoCleanUp cleanup([&rMem]() { if (rMem.memory)
+        {
+            free(rMem.memory);
+            rMem.memory = nullptr;
+        }
+    });
+
+    auto rc = curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &rMem);
+    if (rc != CURLE_OK)
+    {
+        SPDLOG_ERROR("Fail to init libcurl with write data:({}) {}.", rc, curlErrorBuf_);
+        return XErrorNok;
+    }
+
+    rc = curl_easy_setopt(curl_, CURLOPT_READDATA, &tMem);
     if (rc != CURLE_OK)
     {
         SPDLOG_ERROR("Fail to init libcurl with read data:({}) {}.", rc, curlErrorBuf_);
         return XErrorNok;
     }
 
-    rc = curl_easy_setopt(curl_, CURLOPT_POSTFIELDSIZE, tXexprem.size);
+    rc = curl_easy_setopt(curl_, CURLOPT_POSTFIELDSIZE, tMem.size);
     if (rc != CURLE_OK)
     {
         SPDLOG_ERROR("Fail to set length of post data for libcurl:({}) {}.", rc, curlErrorBuf_);
@@ -268,7 +311,7 @@ XErrorCode XLibcurlTransport::curlPost(const string & body)
 
     int httpResponseCode = 0;
     curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &httpResponseCode);
-    SPDLOG_DEBUG("Post event:{} ({}).", body, httpResponseCode);
+    SPDLOG_DEBUG("Post event:{}, response code: ({}), response body:{}.", body, httpResponseCode, rMem.size>0 ? rMem.memory : "None");
 
     if ((httpResponseCode / 100) == 2)
     {
@@ -297,15 +340,15 @@ size_t XLibcurlTransport::readCallback(void * ptr, size_t size, size_t nmemb, vo
 {
     size_t rtn = 0;
     size_t bytesToWrite = 0;
-    XexpremoryStuct* tXexprem = (XexpremoryStuct*)userp;
+    XMemoryStuct* tMem = (XMemoryStuct*)userp;
 
-    bytesToWrite = std::min(size*nmemb, tXexprem->size);
+    bytesToWrite = std::min(size*nmemb, tMem->size);
 
     if (bytesToWrite > 0)
     {
-        strncpy((char *)ptr, tXexprem->memory, bytesToWrite);
-        tXexprem->memory += bytesToWrite;
-        tXexprem->size -= bytesToWrite;
+        strncpy((char *)ptr, tMem->memory, bytesToWrite);
+        tMem->memory += bytesToWrite;
+        tMem->size -= bytesToWrite;
         rtn = bytesToWrite;
     }
     return rtn;
@@ -313,6 +356,19 @@ size_t XLibcurlTransport::readCallback(void * ptr, size_t size, size_t nmemb, vo
 
 size_t XLibcurlTransport::writeCallback(void * ptr, size_t size, size_t nmemb, void * userp)
 {
-    return size_t();
+    size_t realSize = size * nmemb;
+    XMemoryStuct* rMem = (XMemoryStuct*)userp;
+    rMem->memory = (char*)realloc(rMem->memory, rMem->size + realSize + 1);
+    if (rMem->memory == nullptr)
+    {
+        SPDLOG_ERROR("No enough memory.");
+        return 0;
+    }
+
+    memcpy(&(rMem->memory[rMem->size]), ptr, realSize);
+    rMem->size += realSize;
+    rMem->memory[rMem->size] = 0;
+
+    return realSize;
 }
 
