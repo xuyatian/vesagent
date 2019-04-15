@@ -40,6 +40,9 @@ namespace vagt
             long verifyHost_;
             std::string userName_;
             std::string userPasswd_;
+
+            XTransportOption():secure_(false),verifyPeer_(1),verifyHost_(2)
+            {}
         };
 
         class XTransport
