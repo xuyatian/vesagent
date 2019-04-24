@@ -54,7 +54,7 @@ git clone https://github.com/xuyatian/xvesagent.git
 cd xvesagent/src
 mkdir _build
 cd _build
-cmake .. -DBUILD_TRANSPORT=ON
+cmake ..
 make
 make install
 ```
