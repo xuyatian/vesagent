@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 2.8)
 
 project (xsample)
 
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 find_package(xencode)
 find_package(xtransport)
 find_package(xlog)
