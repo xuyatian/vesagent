@@ -1,7 +1,5 @@
 add_subdirectory(encode)
-if(BUILD_TRANSPORT)
-	add_subdirectory(transport)
-endif()
+add_subdirectory(transport)
 
 file(GLOB COM_HDRS "common/*.h")
 
