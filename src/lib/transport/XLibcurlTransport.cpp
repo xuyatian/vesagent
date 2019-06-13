@@ -167,6 +167,13 @@ XErrorCode XLibcurlTransport::initLibcurl()
             SPDLOG_ERROR("Fail to init libcurl with client host verification:({}) {}.", rc, curlErrorBuf_);
             return XErrorNok;
         }
+
+        rc = curl_easy_setopt(curl_, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+        if (rc != CURLE_OK)
+        {
+            SPDLOG_ERROR("Fail to init libcurl with SSL version:({}) {}.", rc, curlErrorBuf_);
+            return XErrorNok;
+        }
     }
 
     rc = curl_easy_setopt(curl_, CURLOPT_USERAGENT, "libcurl-agent/1.0");
