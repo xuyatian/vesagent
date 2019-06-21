@@ -116,6 +116,11 @@ XErrorCode vagt::queue::XDiskQueue::push(const std::string & val)
     return XErrorOk;
 }
 
+XErrorCode vagt::queue::XDiskQueue::push(std::string && val)
+{
+    return push(val);
+}
+
 void vagt::queue::XDiskQueue::pop()
 {
     if (!it_ || !it_->Valid())

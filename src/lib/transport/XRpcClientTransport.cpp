@@ -82,6 +82,11 @@ XErrorCode vagt::transport::XRpcClientTransport::post(const std::string & event)
     }
 }
 
+XErrorCode vagt::transport::XRpcClientTransport::post(std::string && event)
+{
+    return post(event);
+}
+
 void vagt::transport::XRpcClientTransport::cancelPost()
 {
     XTransport::cancelPost();

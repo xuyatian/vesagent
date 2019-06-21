@@ -95,6 +95,41 @@ XErrorCode vagt::transport::XBufferedTransport::post(const std::string& event)
     }
 }
 
+XErrorCode vagt::transport::XBufferedTransport::post(std::string&& event)
+{
+    if (shouldCancelPost())
+    {
+        return XErrorCanceled;
+    }
+
+    if (event.empty())
+    {
+        SPDLOG_WARN("Trying post empty event.");
+        return XErrorClientError;
+    }
+
+    if (!queue_)
+    {
+        return XErrorNok;
+    }
+
+    auto rc = vagt::queue::XErrorOk;
+    {
+        unique_lock<mutex> _(lock_);
+        rc = queue_->push(event);
+        cond_.notify_one();
+    }
+   
+    if (rc == vagt::queue::XErrorOk)
+    {
+        return XErrorOk;
+    }
+    else
+    {
+        return XErrorNok;
+    }
+}
+
 void vagt::transport::XBufferedTransport::cancelPost()
 {
     XTransport::cancelPost();
