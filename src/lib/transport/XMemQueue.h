@@ -13,7 +13,6 @@ namespace vagt
             XMemQueue(int capacity);
             virtual bool empty() override;
             virtual XErrorCode push(const std::string & val) override;
-            virtual XErrorCode push(std::string && val) override;
             virtual void pop() override;
             virtual std::string front() override;
         private:

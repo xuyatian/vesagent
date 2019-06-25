@@ -135,28 +135,6 @@ XErrorCode vagt::transport::XRpcServerTransport::post(const std::string & event)
     return transport_->post(event);
 }
 
-XErrorCode vagt::transport::XRpcServerTransport::post(std::string && event)
-{
-    if (shouldCancelPost())
-    {
-        return XErrorCanceled;
-    }
-
-    if (event.empty())
-    {
-        SPDLOG_WARN("Trying post empty event.");
-        return XErrorClientError;
-    }
-
-    if (!transport_)
-    {
-        SPDLOG_ERROR("Empty transport.");
-        return XErrorNok;
-    }
-
-    return transport_->post(event);
-}
-
 void vagt::transport::XRpcServerTransport::cancelPost()
 {
     XTransport::cancelPost();

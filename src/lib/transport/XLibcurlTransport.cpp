@@ -72,11 +72,6 @@ XErrorCode XLibcurlTransport::post(const std::string& event)
     return curlPost(event);
 }
 
-XErrorCode XLibcurlTransport::post(std::string&& event)
-{
-    return post(event);
-}
-
 XErrorCode XLibcurlTransport::initLibcurl()
 {
     auto rc = curl_global_init(CURL_GLOBAL_SSL);

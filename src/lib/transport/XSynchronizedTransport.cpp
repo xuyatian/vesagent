@@ -90,27 +90,6 @@ XErrorCode XSynchronizedTransport::post(const std::string& event)
     return XErrorNok;
 }
 
-XErrorCode XSynchronizedTransport::post(std::string&& event)
-{
-    if (shouldCancelPost())
-    {
-        return XErrorCanceled;
-    }
-
-    if (event.empty())
-    {
-        SPDLOG_WARN("Trying post empty event.");
-        return XErrorClientError;
-    }
-
-    unique_lock<mutex> lk(postLock_);
-    if (transport_)
-    {
-        return transport_->post(event);
-    }
-    return XErrorNok;
-}
-
 void XSynchronizedTransport::cancelPost()
 {
     XTransport::cancelPost();

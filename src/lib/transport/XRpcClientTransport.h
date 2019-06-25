@@ -21,7 +21,6 @@ namespace vagt
             virtual XErrorCode start() override;
             virtual XErrorCode stop() override;
             virtual XErrorCode post(const std::string& event) override;
-            virtual XErrorCode post(std::string&& event) override;
 
             virtual void cancelPost() override;
             virtual void allowPost() override;

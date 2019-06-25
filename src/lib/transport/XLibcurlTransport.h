@@ -24,8 +24,6 @@ namespace vagt
 
             virtual XErrorCode post(const std::string& event) override;
 
-            virtual XErrorCode post(std::string&& event) override;
-
         private:
             XErrorCode initLibcurl();
             XErrorCode cleanupLibcurl();

@@ -32,21 +32,6 @@ XErrorCode vagt::queue::XMemQueue::push(const std::string & val)
     return XErrorOk;
 }
 
-XErrorCode vagt::queue::XMemQueue::push(std::string && val)
-{
-    if (size_ >= capacity_)
-    {
-        queue_.pop();
-        SPDLOG_WARN("Drop from queue.");
-        size_--;
-    }
-
-    queue_.push(val);
-    size_++;
-
-    return XErrorOk;
-}
-
 void vagt::queue::XMemQueue::pop()
 {
     //cal empty() before cal pop()

@@ -82,11 +82,6 @@ namespace vagt
             virtual XErrorCode post(const std::string& event) = 0;
 
             /*************************************************************************************************//**
-            *    Post event string.
-            *****************************************************************************************************/
-            virtual XErrorCode post(std::string&& event) = 0;
-
-            /*************************************************************************************************//**
             *    Cancel the running and subsequent post() until allowPost() is called.
             *    It is useful especially when transport is wrapped by SynchronizedTransport.
             *****************************************************************************************************/
