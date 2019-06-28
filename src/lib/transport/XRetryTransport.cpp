@@ -73,9 +73,8 @@ XErrorCode XRetryTransport::post(const std::string& event)
 
     isRetryRunning_.store(true, std::memory_order_release);
 
-    for (auto i=0;
-        !shouldCancelPost() && i<tryTimes_;
-        ++i)
+	int idx = 0;
+    do
     {
         SPDLOG_DEBUG("Posting event:{}.", event);
         rc = transport_->post(event);
@@ -94,7 +93,13 @@ XErrorCode XRetryTransport::post(const std::string& event)
         //else if (rc == XErrorTimeout || rc == XErrorServerError || rc == XErrorNetworkError)
         else 
         {
-            SPDLOG_INFO("Stopping transport for retry event:({}).", rc);
+            ++idx;
+            if (shouldCancelPost() || idx>=tryTimes_)
+            {
+                break;
+            }
+
+            SPDLOG_INFO("Stopping transport for retry:({}), time:({}).", rc, idx);
             transport_->stop();
             {
                 unique_lock<mutex> lk(lock_);
@@ -107,11 +112,12 @@ XErrorCode XRetryTransport::post(const std::string& event)
                 }
             }
 
-            SPDLOG_INFO("Starting transport for retry event:({}).", rc);
+            SPDLOG_INFO("Starting transport for retry:({}), time:({}).", rc, idx);
             transport_->start();
-            continue;
         }
     }
+    while(true);
+
 
     isRetryRunning_.store(false, std::memory_order_release);
     SPDLOG_ERROR("Post event:({}).", rc);
