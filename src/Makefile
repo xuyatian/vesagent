@@ -9,7 +9,7 @@ test:
 	mkdir test/build
 	cd test/build; cmake .. -DENABLE_COVERAGE=ON; make; ./xtest
 	lcov -c -d build/lib/encode/CMakeFiles/xencode.dir -d build/lib/transport/CMakeFiles/xtransport.dir -o coverage.info
-	lcov -r coverage.info '/usr/*' 'transport/gen-cpp/*' -o xvesagent.info
+	lcov -r coverage.info '/usr/*' '*/transport/gen-cpp/*' -o xvesagent.info
 	genhtml xvesagent.info -o coverage
 	rm -rf *.info
 

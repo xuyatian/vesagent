@@ -9,6 +9,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    // encode
     vector<shared_ptr<XSerialable>> events = {
         buildFault(),
         buildHeartbeat(),
@@ -25,8 +26,17 @@ int main(int argc, char** argv)
 
     for (auto event : events)
     {
-        cout << event->toString() << endl;
+        event->toString();
     }
+
+    //transport
+    testLibcurlTransport();
+    testRetryTransport();
+    testSwitchableTransport();
+    testMemBufferedTransport();
+    testDiskBufferedTransport();
+    testRpcClientTransport();
+    testRpcServerTransport();
 
     return 0;
 }
