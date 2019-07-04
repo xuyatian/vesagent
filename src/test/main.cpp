@@ -9,6 +9,10 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    // common
+    vagt::log::init("/dev/null");
+    vagt::log::setLevel(log::XLogOff);
+
     // encode
     vector<shared_ptr<XSerialable>> events = {
         buildFault(),
@@ -21,7 +25,9 @@ int main(int argc, char** argv)
         buildSyslog(),
         buildThresholdCrossingAlert(),
         buildXVoiceQuality(),
-        buildBatch()
+        buildBatch(),
+        buildMobileFlow(),
+        buildSipSignaling()
     };
 
     for (auto event : events)
@@ -30,6 +36,7 @@ int main(int argc, char** argv)
     }
 
     //transport
+    /*
     testLibcurlTransport();
     testRetryTransport();
     testSwitchableTransport();
@@ -37,6 +44,7 @@ int main(int argc, char** argv)
     testDiskBufferedTransport();
     testRpcClientTransport();
     testRpcServerTransport();
+    */
 
     return 0;
 }

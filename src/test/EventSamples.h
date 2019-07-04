@@ -11,6 +11,8 @@
 #include "XThresholdCrossingAlertFields.h"
 #include "XVoiceQualityFields.h"
 #include "XBatch.h"
+#include "XMobileFlowFields.h"
+#include "XSipSignalingFields.h"
 
 using namespace std;
 using namespace vagt;
@@ -27,4 +29,6 @@ shared_ptr<XSerialable> buildSyslog();
 shared_ptr<XSerialable> buildThresholdCrossingAlert();
 shared_ptr<XSerialable> buildXVoiceQuality();
 shared_ptr<XSerialable> buildBatch();
+shared_ptr<XSerialable> buildMobileFlow();
+shared_ptr<XSerialable> buildSipSignaling();
 

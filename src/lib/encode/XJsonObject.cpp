@@ -37,5 +37,5 @@ void vagt::encode::XJsonObject::setNfSubscribedObjectName(const XString & nfSubs
 
 void vagt::encode::XJsonObject::setObjectSchemaUrl(const XString & objectSchemaUrl)
 {
-    return setObjectSchemaUrl(objectSchemaUrl);
+    return imp_->setObjectSchemaUrl(objectSchemaUrl);
 }
