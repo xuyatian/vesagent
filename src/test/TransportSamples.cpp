@@ -15,7 +15,7 @@ void testLibcurlTransport()
     XTransportOption opt;
     opt.url_ = "http://127.0.0.1:30000";
 
-    auto transport = XTransport::LibCurlTransport(opt);
+    auto transport = XTransport::SynchronizedTransport(XTransport::LibCurlTransport(opt));
 
     transport->start();
 

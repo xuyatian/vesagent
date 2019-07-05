@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     }
 
     //transport
-    /*
+    
     testLibcurlTransport();
     testRetryTransport();
     testSwitchableTransport();
@@ -44,7 +44,6 @@ int main(int argc, char** argv)
     testDiskBufferedTransport();
     testRpcClientTransport();
     testRpcServerTransport();
-    */
 
     return 0;
 }
