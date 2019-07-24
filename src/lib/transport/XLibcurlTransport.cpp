@@ -325,11 +325,6 @@ XErrorCode XLibcurlTransport::curlPost(const string & body)
         return XErrorOk;
     }
 
-    if (httpResponseCode == 401)
-    {
-        return XErrorUnauthorized;
-    }
-
     if ((httpResponseCode / 100) == 4)
     {
         return XErrorClientError;
