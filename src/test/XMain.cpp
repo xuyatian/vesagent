@@ -1,5 +1,5 @@
-#include "EventSamples.h"
-#include "TransportSamples.h"
+#include "XEventSamples.h"
+#include "XTransportSamples.h"
 #include "XLog.h"
 #include <iostream>
 #include <cstdlib>

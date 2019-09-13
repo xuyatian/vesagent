@@ -1,4 +1,4 @@
-#include "EventSamples.h"
+#include "XEventSamples.h"
 
 shared_ptr<XSerialable> buildFault()
 {

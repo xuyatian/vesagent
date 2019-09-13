@@ -17,8 +17,10 @@ target_link_libraries(xtest ${XENCODE_LIBRARY} ${XTRANSPORT_LIBRARY})
 add_custom_command(TARGET xtest
 	POST_BUILD
     COMMAND ./test/xtest
-	COMMAND gcovr -s -r ${CMAKE_SOURCE_DIR} --exclude-directories 'lib/transport/CMakeFiles/xtransport.dir/gen-cpp' 
-	COMMAND gcovr -s -r ${CMAKE_SOURCE_DIR} --exclude-directories 'lib/transport/CMakeFiles/xtransport.dir/gen-cpp' --xml -o ${COVERAGE_DIR}/coverage.xml
+	COMMAND gcov -d lib/encode/CMakeFiles/xencode.dir/*.cpp.gcno lib/transport/CMakeFiles/xtransport.dir/*.cpp.gcno lib/encode/CMakeFiles/xencode.dir/__/common/*.cpp.gcno test/CMakeFiles/xtest.dir/*.cpp.gcno
+	COMMAND mkdir -p ${COVERAGE_DIR}
+	COMMAND mv X*.gcov ${COVERAGE_DIR}/
+	COMMAND rm *.gcov -rf
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 

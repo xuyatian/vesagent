@@ -1,7 +1,7 @@
 #pragma once
 
 #include "XTransport.h"
-#include "EventSamples.h"
+#include "XEventSamples.h"
 
 void testLibcurlTransport();
 void testRetryTransport();
