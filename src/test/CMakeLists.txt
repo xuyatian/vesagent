@@ -19,7 +19,7 @@ add_custom_command(TARGET xtest
     COMMAND ./test/xtest
 	COMMAND gcovr -s -r .. --exclude-directories 'lib/transport/CMakeFiles/xtransport.dir/gen-cpp' 
 	COMMAND gcovr -s -r .. --exclude-directories 'lib/transport/CMakeFiles/xtransport.dir/gen-cpp' --xml
-	COMMAND gcovr -s -r .. --exclude-directories 'lib/transport/CMakeFiles/xtransport.dir/gen-cpp' --xml -o coverage.xml
+	COMMAND gcovr -s -r .. --exclude-directories 'lib/transport/CMakeFiles/xtransport.dir/gen-cpp' --xml -o ${COVERAGE_DIR}/coverage.xml
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 
