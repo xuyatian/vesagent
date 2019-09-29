@@ -21,6 +21,12 @@ namespace vagt
             virtual XErrorCode start() override;
             virtual XErrorCode stop() override;
             virtual XErrorCode post(const std::string& event) override;
+            virtual XErrorCode control(int controlFlag1,
+                int controlFlag2,
+                int controlFlag3,
+                const std::string& controlString1,
+                const std::string& controlString2,
+                const std::string& controlString3) override;
 
             virtual void cancelPost() override;
             virtual void allowPost() override;

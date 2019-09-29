@@ -82,6 +82,48 @@ XErrorCode vagt::transport::XRpcClientTransport::post(const std::string & event)
     }
 }
 
+XErrorCode vagt::transport::XRpcClientTransport::control(int controlFlag1,
+    int controlFlag2,
+    int controlFlag3,
+    const std::string& controlString1,
+    const std::string& controlString2,
+    const std::string& controlString3)
+{
+    if (!rpcClient_)
+    {
+        SPDLOG_ERROR("RPC client is not started.");
+        return XErrorNok;
+    }
+
+    try
+    {
+        XRpcControlField controlField;
+        controlField.control1 = controlFlag1;
+        controlField.control2 = controlFlag2;
+        controlField.control3 = controlFlag3;
+        if (!controlString1.empty()) controlField.__set_control4(controlString1);
+        if (!controlString2.empty()) controlField.__set_control5(controlString2);
+        if (!controlString3.empty()) controlField.__set_control6(controlString3);
+
+        return (XErrorCode)(rpcClient_->control(controlField));
+    }
+    catch (TTransportException& ex)
+    {
+        SPDLOG_ERROR("Fail to post control command:({}).", ex.what());
+        return XErrorNetworkError;
+    }
+    catch (TException& ex)
+    {
+        SPDLOG_ERROR("Fail to post control command:({}).", ex.what());
+        return XErrorNetworkError;
+    }
+    catch (...)
+    {
+        SPDLOG_ERROR("Fail to post control command.");
+        return XErrorNetworkError;
+    }
+}
+
 void vagt::transport::XRpcClientTransport::cancelPost()
 {
     XTransport::cancelPost();

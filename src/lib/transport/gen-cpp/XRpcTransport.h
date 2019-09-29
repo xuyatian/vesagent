@@ -22,6 +22,7 @@ class XRpcTransportIf {
  public:
   virtual ~XRpcTransportIf() {}
   virtual int16_t post(const std::string& data) = 0;
+  virtual int16_t control(const XRpcControlField& control) = 0;
 };
 
 class XRpcTransportIfFactory {
@@ -52,6 +53,10 @@ class XRpcTransportNull : virtual public XRpcTransportIf {
  public:
   virtual ~XRpcTransportNull() {}
   int16_t post(const std::string& /* data */) {
+    int16_t _return = 0;
+    return _return;
+  }
+  int16_t control(const XRpcControlField& /* control */) {
     int16_t _return = 0;
     return _return;
   }
@@ -161,6 +166,110 @@ class XRpcTransport_post_presult {
 
 };
 
+typedef struct _XRpcTransport_control_args__isset {
+  _XRpcTransport_control_args__isset() : control(false) {}
+  bool control :1;
+} _XRpcTransport_control_args__isset;
+
+class XRpcTransport_control_args {
+ public:
+
+  XRpcTransport_control_args(const XRpcTransport_control_args&);
+  XRpcTransport_control_args& operator=(const XRpcTransport_control_args&);
+  XRpcTransport_control_args() {
+  }
+
+  virtual ~XRpcTransport_control_args() throw();
+  XRpcControlField control;
+
+  _XRpcTransport_control_args__isset __isset;
+
+  void __set_control(const XRpcControlField& val);
+
+  bool operator == (const XRpcTransport_control_args & rhs) const
+  {
+    if (!(control == rhs.control))
+      return false;
+    return true;
+  }
+  bool operator != (const XRpcTransport_control_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const XRpcTransport_control_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class XRpcTransport_control_pargs {
+ public:
+
+
+  virtual ~XRpcTransport_control_pargs() throw();
+  const XRpcControlField* control;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _XRpcTransport_control_result__isset {
+  _XRpcTransport_control_result__isset() : success(false) {}
+  bool success :1;
+} _XRpcTransport_control_result__isset;
+
+class XRpcTransport_control_result {
+ public:
+
+  XRpcTransport_control_result(const XRpcTransport_control_result&);
+  XRpcTransport_control_result& operator=(const XRpcTransport_control_result&);
+  XRpcTransport_control_result() : success(0) {
+  }
+
+  virtual ~XRpcTransport_control_result() throw();
+  int16_t success;
+
+  _XRpcTransport_control_result__isset __isset;
+
+  void __set_success(const int16_t val);
+
+  bool operator == (const XRpcTransport_control_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const XRpcTransport_control_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const XRpcTransport_control_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _XRpcTransport_control_presult__isset {
+  _XRpcTransport_control_presult__isset() : success(false) {}
+  bool success :1;
+} _XRpcTransport_control_presult__isset;
+
+class XRpcTransport_control_presult {
+ public:
+
+
+  virtual ~XRpcTransport_control_presult() throw();
+  int16_t* success;
+
+  _XRpcTransport_control_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class XRpcTransportClient : virtual public XRpcTransportIf {
  public:
   XRpcTransportClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -189,6 +298,9 @@ class XRpcTransportClient : virtual public XRpcTransportIf {
   int16_t post(const std::string& data);
   void send_post(const std::string& data);
   int16_t recv_post();
+  int16_t control(const XRpcControlField& control);
+  void send_control(const XRpcControlField& control);
+  int16_t recv_control();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -205,10 +317,12 @@ class XRpcTransportProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_post(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_control(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   XRpcTransportProcessor(::apache::thrift::stdcxx::shared_ptr<XRpcTransportIf> iface) :
     iface_(iface) {
     processMap_["post"] = &XRpcTransportProcessor::process_post;
+    processMap_["control"] = &XRpcTransportProcessor::process_control;
   }
 
   virtual ~XRpcTransportProcessor() {}
@@ -246,6 +360,15 @@ class XRpcTransportMultiface : virtual public XRpcTransportIf {
     return ifaces_[i]->post(data);
   }
 
+  int16_t control(const XRpcControlField& control) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->control(control);
+    }
+    return ifaces_[i]->control(control);
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -279,6 +402,9 @@ class XRpcTransportConcurrentClient : virtual public XRpcTransportIf {
   int16_t post(const std::string& data);
   int32_t send_post(const std::string& data);
   int16_t recv_post(const int32_t seqid);
+  int16_t control(const XRpcControlField& control);
+  int32_t send_control(const XRpcControlField& control);
+  int16_t recv_control(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

@@ -82,6 +82,16 @@ namespace vagt
             virtual XErrorCode post(const std::string& event) = 0;
 
             /*************************************************************************************************//**
+            *    Control interface.
+            *****************************************************************************************************/
+            virtual XErrorCode control(int controlFlag1,
+                                       int controlFlag2,
+                                       int controlFlag3,
+                                       const std::string& controlString1,
+                                       const std::string& controlString2,
+                                       const std::string& controlString3);
+
+            /*************************************************************************************************//**
             *    Cancel the running and subsequent post() until allowPost() is called.
             *    It is useful especially when transport is wrapped by SynchronizedTransport.
             *****************************************************************************************************/

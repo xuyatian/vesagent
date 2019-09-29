@@ -13,6 +13,16 @@ XTransport::XTransport():cancel_(true)
 {
 }
 
+XErrorCode XTransport::control(int controlFlag1, 
+    int controlFlag2, 
+    int controlFlag3, 
+    const std::string& controlString1, 
+    const std::string& controlString2,
+    const std::string& controlString3)
+{
+    return XErrorOk;
+}
+
 void XTransport::cancelPost()
 {
     cancel_.store(true, std::memory_order_release);

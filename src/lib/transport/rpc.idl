@@ -1,6 +1,17 @@
 namespace cpp vagt.transport.rpc
                                                                  
+struct XRpcControlField
+{
+    1: optional i32 control1,
+    2: optional i32 control2,
+    3: optional i32 control3,
+    4: optional string control4,
+    5: optional string control5,
+    6: optional string control6
+}
+
 service XRpcTransport
 {                                                                
-    i16 post(1: string data)                  
+    i16 post(1: string data),                  
+    i16 control(1: XRpcControlField control)                 
 }                                                                

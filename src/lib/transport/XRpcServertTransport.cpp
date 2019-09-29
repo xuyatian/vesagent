@@ -33,6 +33,19 @@ public:
             return transport_->post(data);
         }
     }
+
+    virtual int16_t control(const XRpcControlField& control) override
+    {
+        if (transport_)
+        {
+            return transport_->control(control.control1,
+                control.control2,
+                control.control3,
+                control.control4,
+                control.control5,
+                control.control6);
+        }
+    }
 private:
     XTransport* transport_;
 };

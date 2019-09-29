@@ -13,4 +13,208 @@
 
 namespace vagt { namespace transport { namespace rpc {
 
+
+XRpcControlField::~XRpcControlField() throw() {
+}
+
+
+void XRpcControlField::__set_control1(const int32_t val) {
+  this->control1 = val;
+__isset.control1 = true;
+}
+
+void XRpcControlField::__set_control2(const int32_t val) {
+  this->control2 = val;
+__isset.control2 = true;
+}
+
+void XRpcControlField::__set_control3(const int32_t val) {
+  this->control3 = val;
+__isset.control3 = true;
+}
+
+void XRpcControlField::__set_control4(const std::string& val) {
+  this->control4 = val;
+__isset.control4 = true;
+}
+
+void XRpcControlField::__set_control5(const std::string& val) {
+  this->control5 = val;
+__isset.control5 = true;
+}
+
+void XRpcControlField::__set_control6(const std::string& val) {
+  this->control6 = val;
+__isset.control6 = true;
+}
+std::ostream& operator<<(std::ostream& out, const XRpcControlField& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t XRpcControlField::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->control1);
+          this->__isset.control1 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->control2);
+          this->__isset.control2 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->control3);
+          this->__isset.control3 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->control4);
+          this->__isset.control4 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->control5);
+          this->__isset.control5 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 6:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->control6);
+          this->__isset.control6 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t XRpcControlField::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("XRpcControlField");
+
+  if (this->__isset.control1) {
+    xfer += oprot->writeFieldBegin("control1", ::apache::thrift::protocol::T_I32, 1);
+    xfer += oprot->writeI32(this->control1);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.control2) {
+    xfer += oprot->writeFieldBegin("control2", ::apache::thrift::protocol::T_I32, 2);
+    xfer += oprot->writeI32(this->control2);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.control3) {
+    xfer += oprot->writeFieldBegin("control3", ::apache::thrift::protocol::T_I32, 3);
+    xfer += oprot->writeI32(this->control3);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.control4) {
+    xfer += oprot->writeFieldBegin("control4", ::apache::thrift::protocol::T_STRING, 4);
+    xfer += oprot->writeString(this->control4);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.control5) {
+    xfer += oprot->writeFieldBegin("control5", ::apache::thrift::protocol::T_STRING, 5);
+    xfer += oprot->writeString(this->control5);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.control6) {
+    xfer += oprot->writeFieldBegin("control6", ::apache::thrift::protocol::T_STRING, 6);
+    xfer += oprot->writeString(this->control6);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(XRpcControlField &a, XRpcControlField &b) {
+  using ::std::swap;
+  swap(a.control1, b.control1);
+  swap(a.control2, b.control2);
+  swap(a.control3, b.control3);
+  swap(a.control4, b.control4);
+  swap(a.control5, b.control5);
+  swap(a.control6, b.control6);
+  swap(a.__isset, b.__isset);
+}
+
+XRpcControlField::XRpcControlField(const XRpcControlField& other0) {
+  control1 = other0.control1;
+  control2 = other0.control2;
+  control3 = other0.control3;
+  control4 = other0.control4;
+  control5 = other0.control5;
+  control6 = other0.control6;
+  __isset = other0.__isset;
+}
+XRpcControlField& XRpcControlField::operator=(const XRpcControlField& other1) {
+  control1 = other1.control1;
+  control2 = other1.control2;
+  control3 = other1.control3;
+  control4 = other1.control4;
+  control5 = other1.control5;
+  control6 = other1.control6;
+  __isset = other1.__isset;
+  return *this;
+}
+void XRpcControlField::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "XRpcControlField(";
+  out << "control1="; (__isset.control1 ? (out << to_string(control1)) : (out << "<null>"));
+  out << ", " << "control2="; (__isset.control2 ? (out << to_string(control2)) : (out << "<null>"));
+  out << ", " << "control3="; (__isset.control3 ? (out << to_string(control3)) : (out << "<null>"));
+  out << ", " << "control4="; (__isset.control4 ? (out << to_string(control4)) : (out << "<null>"));
+  out << ", " << "control5="; (__isset.control5 ? (out << to_string(control5)) : (out << "<null>"));
+  out << ", " << "control6="; (__isset.control6 ? (out << to_string(control6)) : (out << "<null>"));
+  out << ")";
+}
+
 }}} // namespace
