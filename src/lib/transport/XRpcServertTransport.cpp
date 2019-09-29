@@ -148,6 +148,27 @@ XErrorCode vagt::transport::XRpcServerTransport::post(const std::string & event)
     return transport_->post(event);
 }
 
+XErrorCode vagt::transport::XRpcServerTransport::control(int controlFlag1,
+                                       int controlFlag2,
+                                       int controlFlag3,
+                                       const std::string& controlString1,
+                                       const std::string& controlString2,
+                                       const std::string& controlString3)
+{
+    if (!transport_)
+    {
+        SPDLOG_ERROR("Empty transport.");
+        return XErrorNok;
+    }
+
+    return transport_->control(controlFlag1,
+                controlFlag2,
+                controlFlag3,
+                controlString1,
+                controlString2,
+                controlString3);
+}
+
 void vagt::transport::XRpcServerTransport::cancelPost()
 {
     XTransport::cancelPost();
