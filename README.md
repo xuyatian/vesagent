@@ -1,5 +1,7 @@
 # Xvesagent
 A C++ implement of ATT Services Spec
+This project has been contributed to [**ONAP**](https://www.onap.org/). The mirror repository on github: https://github.com/onap/vnfsdk-ves-agent
+
 ===
 Xvesagent provides 2 independent modules:
 * **xencode**: encode structure event to json string.
